@@ -3,23 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %} {% endblock %}</title>
-    <style>
-        nav a {
-            color: #d64161;
-            font-size: 3em;
-            margin-left: 50px;
-            text-decoration: none;
-        }
-    </style>
+    <meta name="description" content="Celery Stocks Restaurant Inventory Management">
+    <meta name="author" content="Team Null">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/skeleton.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
 </head>
+
 <body>
+  <div class="container">
     <nav>
-      <a href="{{url_for('index')}}">App</a>
+      <a href="{{url_for('index')}}">Home</a>
+      <a href="{{url_for('login')}}">Login</a>
       <a href="{{url_for('about')}}">About</a>
     </nav>
     <hr>
     <div class="content">
-        {% block content %} {% endblock %}
+      {% block content %} {% endblock %}
     </div>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+  </div>
 </body>
 </html>
