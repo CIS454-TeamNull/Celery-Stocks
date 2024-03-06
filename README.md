@@ -7,12 +7,16 @@ git clone this repo
 
 enter the directory and create your own branch to make your changes in
 
-git branch your_name_dev
+git checkout -b your_name_dev
 
-Then run python -m venv venv
+Then create a python virtual environment with: python -m venv venv
 
-Activate the venv with source venv/bin/activate
+Activate the venv with: source venv/bin/activate
 
-then run pip install -r requirements.txt 
+then install python modules with: pip install -r requirements.txt 
 
-now you can run the application with flask run
+now you can run the Flask application
+
+FLASK_APP=main.py SECRET_KEY=keyhere flask --debug run
+
+Now you can load the site on your machine, default: http://127.0.0.1:5000 
