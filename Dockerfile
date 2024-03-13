@@ -8,3 +8,5 @@ COPY ./config.py config.py
 COPY ./app.db app.db
 COPY ./.flaskenv .flaskenv
 COPY ./main.py main.py
+
+ENV STATIC_PATH /app/app/static
