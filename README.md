@@ -1,7 +1,7 @@
 # Celery-Stocks
 Inventory Management for Restaurants
 
-Notes for Team Null:
+#### Notes for Team Null:
 
 git clone this repo
 
@@ -19,4 +19,19 @@ now you can run the Flask application
 
 FLASK_APP=main.py SECRET_KEY=keyhere flask --debug run
 
-Now you can load the site on your machine, default: http://127.0.0.1:5000 
+Now you can load the site on your machine, default: http://localhost:5000
+or http://127.0.0.1:5000 depending on if your system has localhost defined
+
+###### Docker Notes
+Build the Docker image with: docker build -t celery:latest .  
+
+Make sure Flask app is stopped, run Docker container with: docker run -p5000:80 celery
+
+###### Helpful tutorials:
+
+https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world
+
+http://getskeleton.com/
+
+https://sqldocs.org/sqlite/introduction/
+
