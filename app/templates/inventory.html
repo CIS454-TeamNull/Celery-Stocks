@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
+
 {% block content %}
-    <h4>Celery Stocks is an in-development inventory management application for restaurants, made by Team Null</h4>
+    <h4>Inventory</h4>
+    <h6>Hello {{ current_user.username }}</h6>
     <img src="{{ url_for('static', filename='images/celery.jpg') }}" alt="celery photo" width="30%" height="auto">
 {% endblock %}
