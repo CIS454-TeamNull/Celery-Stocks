@@ -17,6 +17,10 @@ then install python modules with: pip install -r requirements.txt
 
 now you can run the Flask application
 
+flask run
+
+or 
+
 FLASK_APP=main.py SECRET_KEY=keyhere flask --debug run
 
 Now you can load the site on your machine, default: http://localhost:5000

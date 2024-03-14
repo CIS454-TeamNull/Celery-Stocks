@@ -4,3 +4,4 @@ flask-sqlalchemy
 flask-wtf
 flask-migrate
 email-validator
+python-dotenv
