@@ -7,8 +7,9 @@
     <meta name="author" content="Team Null">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/skeleton.css') }}">
-    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/noah.css') }}">
+     <link rel="stylesheet" href="{{ url_for('static', filename='css/skeleton.css') }}">
+     <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/favicon.png') }}">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='images/apple-touch-icon.png') }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='images/favicon-32x32.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='images/favicon-16x16.png') }}">
@@ -18,16 +19,25 @@
 <body>
   <div class="container">
     <nav>
-      <a href="{{url_for('index')}}">Home</a>
-      
       {% if current_user.is_anonymous %}
-      <a href="{{url_for('login')}}">Login</a>
+        <a href="{{url_for('index')}}">Home</a>
+        <a href="{{url_for('login')}}">Login</a>
       {% else %}
-      <a href="{{url_for('logout')}}">Logout</a>
+      <a href="{{url_for('inventory')}}">Inventory</a>
+        <a href="{{url_for('user', username=current_user.username)}}">Account</a>
+        <a href="{{url_for('logout')}}">Logout</a>
       {% endif %}
 
       <a href="{{url_for('about')}}">About</a>
     </nav>
+
+    {% if current_user.is_anonymous %}
+      <section class="hero">
+        <h2>Welcome to Celery Stocks</h2>
+        <p>An easy-to-use tool for restaurant inventory management!</p>
+      </section>
+    {% endif %}
+
     <hr>
     <div class="content">
       {% block content %} {% endblock %}
@@ -43,5 +53,10 @@
     {% endif %}
     {% endwith %}
   </div>
+
+  <footer>
+    <p>&copy; 2024 Celery Stocks. All rights reserved.</p>
+  </footer>
+
 </body>
 </html>

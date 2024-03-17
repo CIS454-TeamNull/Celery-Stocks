@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<table>
+  <tr valign="top">
+    <td><img src="{{user.avatar(128)}}"></td>
+    <td>
+      <h2>User: {{ user.username }}</h2>
+      <p>Account Type: {{user.account_type}}</p>
+      {% if user.last_seen %}<p>Last Login: {{user.last_seen}}</p> {% endif %}
+    </td>
+  </tr>
+  </table>
+  {% if user == current_user %}
+    <p><a href="{{url_for('edit_profile')}}">Edit your Account</a></p>
+  {% endif %}
+{% endblock %}

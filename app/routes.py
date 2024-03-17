@@ -2,24 +2,37 @@ from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_user, login_required, logout_user
 import sqlalchemy as sa
 from app import app, db
-from app.forms import LoginForm, RegistrationForm
-from app.models import User
-import datetime
+from app.forms import LoginForm, RegistrationForm, EditProfileForm, AddItemForm, EditItemForm
+from app.models import User, Item
+from datetime import datetime, timezone
 from urllib.parse import urlsplit
 
 @app.route("/")
 @app.route("/index")
 def index():
-    return render_template("index.html", utc_dt=datetime.datetime.utcnow())
+    return render_template("index.html")
 
 @app.route("/about")
 def about():
     return render_template("about.html")
 
-@app.route("/inventory")
+@app.route("/inventory", methods=['GET', 'POST'])
 @login_required
 def inventory():
-    return render_template("inventory.html", title="Celery Stocks - Inventory")
+    #additem_form = AddItemForm()
+    #edititem_form = EditItemForm()
+    #if form.validate_on_submit():
+    #    item = form.item_name.data
+    #    supply = form.supply.data
+        #db.session.add(item, supply)
+        #db.session.commit()
+    #    flash('Inventory Modified')
+        #return redirect(url_for('inventory'))
+    #items = [
+    #        { 'Item': {item},  'Supply': {supply} }
+    #        ]
+    #return render_template("inventory.html", title="Celery Stocks - Inventory", additem_form=additem_form, edititem_form=edititem_form)
+    return render_template("inventory.html", title="Celery Stocks - Manage Inventory")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -36,10 +49,10 @@ def login():
         next_page = request.args.get('next')
         if not next_page or urlsplit(next_page).netloc != '':
             next_page = url_for('inventory')
+        current_user.last_seen = datetime.now(timezone.utc)
+        db.session.commit()
         return redirect(next_page)
-        #flash("Login request for {}, remember={}".format(
-        #    form.username.data, form.remember_me.data))
-        #return redirect(url_for("index"))
+    
     return render_template("login.html", title="Sign In", form=form)
 
 @app.route('/logout')
@@ -60,3 +73,23 @@ def register():
         flash("Registration complete")
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
+
+@app.route('/user/<username>')
+@login_required
+def user(username):
+    user = db.first_or_404(sa.select(User).where(User.username == username))
+    return render_template('user.html', user=user)
+
+@app.route('/edit_profile', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    form = EditProfileForm(current_user.username)
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        db.session.commit()
+        flash('Changes Saved')
+        return redirect(url_for('edit_profile'))
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+    return render_template('edit_profile.html', title='Edit Account', form=form)
+
