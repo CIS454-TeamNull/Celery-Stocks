@@ -2,24 +2,37 @@ from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_user, login_required, logout_user
 import sqlalchemy as sa
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, EditProfileForm
-from app.models import User
+from app.forms import LoginForm, RegistrationForm, EditProfileForm, AddItemForm, EditItemForm
+from app.models import User, Item
 from datetime import datetime, timezone
 from urllib.parse import urlsplit
 
 @app.route("/")
 @app.route("/index")
 def index():
-    return render_template("index.html", utc_dt=datetime.utcnow())
+    return render_template("index.html")
 
 @app.route("/about")
 def about():
     return render_template("about.html")
 
-@app.route("/inventory")
+@app.route("/inventory", methods=['GET', 'POST'])
 @login_required
 def inventory():
-    return render_template("inventory.html", title="Celery Stocks - Inventory")
+    #additem_form = AddItemForm()
+    #edititem_form = EditItemForm()
+    #if form.validate_on_submit():
+    #    item = form.item_name.data
+    #    supply = form.supply.data
+        #db.session.add(item, supply)
+        #db.session.commit()
+    #    flash('Inventory Modified')
+        #return redirect(url_for('inventory'))
+    #items = [
+    #        { 'Item': {item},  'Supply': {supply} }
+    #        ]
+    #return render_template("inventory.html", title="Celery Stocks - Inventory", additem_form=additem_form, edititem_form=edititem_form)
+    return render_template("inventory.html", title="Celery Stocks - Manage Inventory")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -70,7 +83,7 @@ def user(username):
 @app.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
-    form = EditProfileForm()
+    form = EditProfileForm(current_user.username)
     if form.validate_on_submit():
         current_user.username = form.username.data
         db.session.commit()
