@@ -9,6 +9,10 @@ enter the directory and create your own branch to make your changes in
 
 git checkout -b your_name_dev
 
+Install virtualenv with pip install virtualenv
+
+https://www.liquidweb.com/kb/how-to-setup-a-python-virtual-environment-on-windows-10/
+
 Then create a python virtual environment with: python -m venv venv
 
 Activate the venv with: source venv/bin/activate
