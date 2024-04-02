@@ -6,38 +6,47 @@ from app.forms import (
     LoginForm,
     RegistrationForm,
     EditProfileForm,
-    AddItemForm,
+    AddIngredientForm,
     EditItemForm,
 )
 from app.models import User, Item
 from datetime import datetime, timezone
 from urllib.parse import urlsplit
 
+
 @app.route("/")
 @app.route("/index")
 def index():
     return render_template("index.html")
 
+
 @app.route("/about")
 def about():
     return render_template("about.html")
 
+
 @app.route("/inventory", methods=["GET", "POST"])
 @login_required
 def inventory():
-    form = AddItemForm()
-    #additem_form = AddItemForm()
+    form = AddIngredientForm()
+    # additem_form = AddItemForm()
     # edititem_form = EditItemForm()
     if form.validate_on_submit():
         item = Item(name=form.item_name.data, supply=form.supply.data)
         db.session.add(item)
         db.session.commit()
-        flash('Inventory Modified')
-        return redirect(url_for('inventory'))
-   
+        flash("Inventory Modified")
+        return redirect(url_for("inventory"))
+
     items = db.session.scalars(sa.select(Item)).all()
-    #return render_template("inventory.html", title="Celery Stocks - Inventory", additem_form=additem_form, edititem_form=edititem_form)
-    return render_template("inventory.html", title="Celery Stocks - Manage Inventory", form=form, items=items)
+    # return render_template("inventory.html", title="Celery Stocks - Inventory", additem_form=additem_form, edititem_form=edititem_form)
+    return render_template(
+        "inventory.html",
+        title="Celery Stocks - Manage Inventory",
+        form=form,
+        items=items,
+    )
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -61,10 +70,12 @@ def login():
 
     return render_template("login.html", title="Sign In", form=form)
 
+
 @app.route("/logout")
 def logout():
     logout_user()
     return redirect(url_for("index"))
+
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -80,11 +91,13 @@ def register():
         return redirect(url_for("login"))
     return render_template("register.html", title="Register", form=form)
 
+
 @app.route("/user/<username>")
 @login_required
 def user(username):
     user = db.first_or_404(sa.select(User).where(User.username == username))
     return render_template("user.html", user=user)
+
 
 @app.route("/edit_profile", methods=["GET", "POST"])
 @login_required

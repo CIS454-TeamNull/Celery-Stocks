@@ -50,13 +50,17 @@ class EditProfileForm(FlaskForm):
                 raise ValidationError("Please use a different username!")
 
 
-class AddItemForm(FlaskForm):
-    item_name = StringField("Item Name", validators=[DataRequired(), Length(min=1, max=140)])
+class AddIngredientForm(FlaskForm):
+    item_name = StringField(
+        "Item Name", validators=[DataRequired(), Length(min=1, max=140)]
+    )
     supply = StringField("Number Added", validators=[DataRequired()])
     submit = SubmitField("Submit")
 
 
 class EditItemForm(FlaskForm):
-    item_name = StringField("Item Name", validators=[DataRequired(), Length(min=1, max=140)])
+    item_name = StringField(
+        "Item Name", validators=[DataRequired(), Length(min=1, max=140)]
+    )
     supply = StringField("Total Supply", validators=[DataRequired()])
     submit = SubmitField("Submit")
