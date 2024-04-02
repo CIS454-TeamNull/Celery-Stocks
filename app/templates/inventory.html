@@ -2,27 +2,37 @@
 
 {% block content %}
     <h6>Hello {{ current_user.username }}</h6>
-    
     <section class="inventory">
-    <h2>Inventory</h2>
-    <form>
-      <label for="item-name">Item Name:</label>
-      <input type="text" id="item-name" name="item-name" required>
-      <label for="quantity">Quantity:</label>
-      <input type="number" id="quantity" name="quantity" required>
-      <button type="submit">Add to Inventory</button>
+    
+    <h3>Add Ingredients to Inventory</h3>
+    <form action="" method="post">
+      {{ form.hidden_tag() }}
+      {{ form.item_name.label }}
+      {{ form.item_name }}
+      {{ form.supply.label }}
+      {{ form.supply }}
+      <p>{{ form.submit() }} </p>
+
+        {% for error in form.item_name.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+      </p>
     </form>
 
     <h3>Current Inventory</h3>
     <table>
       <thead>
-        <tr>
-          <th>Item Name</th>
-          <th>Quantity</th>
-        </tr>
+        <th>Item Name</th>
+        <th>Supply</th>
       </thead>
+        {% for item in items %}
+          <tr>
+          <td>{{ item.name }}</td> 
+          <td>{{ item.supply }}</td>
+          </tr>
+        {% endfor %}
       <tbody>
-        <!-- Inventory items will be dynamically added here -->
+
       </tbody>
     </table>
   </section>
