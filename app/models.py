@@ -49,3 +49,14 @@ class Item(db.Model):
 
     def __repr__(self):
         return "<Item {}>".format(self.name)
+
+class Waiter(User):
+    def sellItem(menuItem):
+        return menuItem
+        
+class Chef(User):
+    def createItem(menuItem, ingredients):
+        for i in ingredients:
+            db.session.add(ingredients[i])
+        db.session.commit()
+        item.update({menuItem : ingredients})
