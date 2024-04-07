@@ -20,15 +20,15 @@
   <div class="container">
     <nav>
       {% if current_user.is_anonymous %}
-        <a href="{{url_for('index')}}">Home</a>
-        <a href="{{url_for('login')}}">Login</a>
+      <a class="button button-primary" href="{{url_for('index')}}">Home</a>
+        <a class="button button-primary" href="{{url_for('login')}}">Login</a>
       {% else %}
-      <a href="{{url_for('inventory')}}">Inventory</a>
-        <a href="{{url_for('user', username=current_user.username)}}">Account</a>
-        <a href="{{url_for('logout')}}">Logout</a>
+      <a class="button button-primary" href="{{url_for('inventory')}}">Inventory</a>
+        <a class="button button-primary" href="{{url_for('user', username=current_user.username)}}">Account</a>
+        <a class="button button-primary" href="{{url_for('logout')}}">Logout</a>
       {% endif %}
 
-      <a href="{{url_for('about')}}">About</a>
+      <a class="button button-primary" href="{{url_for('about')}}">About</a>
     </nav>
 
     {% if current_user.is_anonymous %}
