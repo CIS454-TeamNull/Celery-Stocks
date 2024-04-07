@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h6>Hello {{ current_user.username }}</h6>
+
+    <h3>Add Ingredients to Inventory</h3>
+    <form action="" method="post">
+      {{ form.hidden_tag() }}
+      {{ form.item_name.label }}
+      {{ form.item_name }}
+      {{ form.supply.label }}
+      {{ form.supply }}
+      <p>{{ form.submit() }} </p>
+
+        {% for error in form.item_name.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+      </p>
+    </form>
+
+{% endblock %}

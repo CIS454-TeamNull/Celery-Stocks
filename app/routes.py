@@ -24,29 +24,45 @@ def index():
 def about():
     return render_template("about.html")
 
-
 @app.route("/inventory", methods=["GET", "POST"])
 @login_required
 def inventory():
-    form = AddIngredientForm()
+    #form = AddIngredientForm()
     # additem_form = AddItemForm()
     # edititem_form = EditItemForm()
-    if form.validate_on_submit():
-        item = Item(name=form.item_name.data, supply=form.supply.data)
-        db.session.add(item)
-        db.session.commit()
-        flash("Inventory Modified")
-        return redirect(url_for("inventory"))
+    #if form.validate_on_submit():
+    #    item = Item(name=form.item_name.data, supply=form.supply.data)
+    #    db.session.add(item)
+    #    db.session.commit()
+    #    flash("Inventory Modified")
+    #    return redirect(url_for("inventory"))
 
     items = db.session.scalars(sa.select(Item)).all()
     # return render_template("inventory.html", title="Celery Stocks - Inventory", additem_form=additem_form, edititem_form=edititem_form)
     return render_template(
         "inventory.html",
-        title="Celery Stocks - Manage Inventory",
-        form=form,
+        title="Celery Stocks - View Inventory",
         items=items,
     )
 
+@app.route("/ingredients", methods=["GET", "POST"])
+@login_required
+def ingredients():
+    form = AddIngredientForm()
+    if form.validate_on_submit():
+        item = Item(name=form.item_name.data, supply=form.supply.data)
+        db.session.add(item)
+        db.session.commit()
+        flash("Inventory Modified")
+        return redirect(url_for("ingredients"))
+
+    items = db.session.scalars(sa.select(Item)).all()
+    return render_template(
+        "ingredients.html",
+        title="Celery Stocks - Edit Ingredients",
+        form=form,
+        items=items,
+    )
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
