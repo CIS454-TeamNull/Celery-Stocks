@@ -111,3 +111,17 @@ def edit_profile():
     elif request.method == "GET":
         form.username.data = current_user.username
     return render_template("edit_profile.html", title="Edit Account", form=form)
+
+
+@app.route("/create_menu_item", methods=["GET", "POST"])
+@login_required
+def createMenuItem():
+    form = createMenuItem()
+    if form.validate_on_submit():
+        db.session.add(form.createMenuItem.data())
+        db.session.commit()
+
+#@app.route("/create_order", methods=["GET", "POST"])
+#@login_required
+# def createOrder():
+#    todo
