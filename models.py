@@ -52,6 +52,12 @@ class Item(db.Model):
         return "<Item {}>".format(self.name)
 
 class Waiter(User):
+    account_type: so.Mapped[Optional[str]] = so.mapped_column(
+        sa.String(64), index=True, default="waiter"
+    )
+        
+class MenuItem(Item):
+    ingredints = []
     def sellItem(menuItem):
         return menuItem
         
@@ -60,4 +66,8 @@ class Chef(User):
         for i in ingredients:
             db.session.add(ingredients[i])
         db.session.commit()
-        item.update({menuItem : ingredients})
+    
+    item.update({menuItem : ingredients})
+       account_type: so.Mapped[Optional[str]] = so.mapped_column(
+        sa.String(64), index=True, default="waiter"
+    )
