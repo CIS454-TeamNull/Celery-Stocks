@@ -56,10 +56,18 @@ class Waiter(User):
         sa.String(64), index=True, default="waiter"
     )
         
-class Chef(User):
-    so.Mapped[Optional[str]] = so.mapped_column(
-        sa.String(64), index=True, default="chef"
-    )
-
 class MenuItem(Item):
     ingredints = []
+    def sellItem(menuItem):
+        return menuItem
+        
+class Chef(User):
+    def createItem(menuItem, ingredients):
+        for i in ingredients:
+            db.session.add(ingredients[i])
+        db.session.commit()
+    
+    item.update({menuItem : ingredients})
+       account_type: so.Mapped[Optional[str]] = so.mapped_column(
+        sa.String(64), index=True, default="waiter"
+    )
