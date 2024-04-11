@@ -32,7 +32,7 @@ def inventory():
     # additem_form = AddItemForm()
     # edititem_form = EditItemForm()
     if form.validate_on_submit():
-        item = Item(name=form.item_name.data, supply=form.supply.data)
+        item = Item(name=form.item_name.data, supply=form.supply.data, menu=form.menu.data)
         db.session.add(item)
         db.session.commit()
         flash("Inventory Modified")
@@ -102,14 +102,16 @@ def user(username):
 @app.route("/edit_profile", methods=["GET", "POST"])
 @login_required
 def edit_profile():
-    form = EditProfileForm(current_user.username)
+    form = EditProfileForm(current_user.username, current_user.email)
     if form.validate_on_submit():
         current_user.username = form.username.data
+        current_user.email = form.email.data
         db.session.commit()
         flash("Changes Saved")
         return redirect(url_for("edit_profile"))
     elif request.method == "GET":
         form.username.data = current_user.username
+        form.email.data = current_user.email
     return render_template("edit_profile.html", title="Edit Account", form=form)
 
 

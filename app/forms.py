@@ -35,11 +35,13 @@ class RegistrationForm(FlaskForm):
 
 class EditProfileForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
+    email = StringField("Email", validators=[DataRequired()])
     submit = SubmitField("Submit")
 
-    def __init__(self, original_username, *args, **kwargs):
+    def __init__(self, original_username, original_email, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.original_username = original_username
+        self.original_email = original_email
 
     def validate_username(self, username):
         if username.data != self.original_username:
@@ -49,12 +51,20 @@ class EditProfileForm(FlaskForm):
             if user is not None:
                 raise ValidationError("Please use a different username!")
 
+    def validate_email(self, email):
+        if email.data != self.original_email:
+            user = db.session.scalar(
+                sa.select(User).where(User.email == self.email.data)
+            )
+            if user is not None:
+                raise ValidationError("Use a different email!")
 
 class AddIngredientForm(FlaskForm):
     item_name = StringField(
         "Item Name", validators=[DataRequired(), Length(min=1, max=140)]
     )
     supply = StringField("Number Added", validators=[DataRequired()])
+    menu = StringField("Menu Entry", validators=[DataRequired(), Length(min=1, max=140)])
     submit = SubmitField("Submit")
 
 
