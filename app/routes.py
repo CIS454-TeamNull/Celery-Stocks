@@ -88,7 +88,15 @@ def register():
         db.session.add(user)
         db.session.commit()
         flash("Registration complete")
-        return redirect(url_for("login"))
+
+        user = db.session.scalar(
+            sa.select(User).where(User.username == form.username.data)
+        )
+        login_user(user, remember=False)
+        current_user.last_seen = datetime.now(timezone.utc)
+        db.session.commit()
+        return redirect(url_for("inventory"))
+
     return render_template("register.html", title="Register", form=form)
 
 
@@ -120,10 +128,33 @@ def edit_profile():
 def createMenuItem():
     form = createMenuItem()
     if form.validate_on_submit():
-        db.session.add(form.createMenuItem.data())
+        db.session.add(form.createMenuItem.data)
         db.session.commit()
 
 #@app.route("/create_order", methods=["GET", "POST"])
 #@login_required
 # def createOrder():
 #    todo
+
+@app.route("/menu", methods=["GET", "POST"])
+@login_required
+def menu():
+    # additem_form = AddItemForm()
+    # edititem_form = EditItemForm()
+    #    if form.validate_on_submit():
+    #    item = Item(name=form.itemname.data, supply=form.supply.data, menu_id=form.menu_id.data)
+    #    db.session.add(item)
+    #    db.session.commit()
+    #    flash("Inventory Modified")
+    #    return redirect(url_for("inventory"))
+
+    items = db.session.scalars(sa.select(Item)).all()
+    # return render_template("inventory.html", title="Celery Stocks - Inventory", additem_form=additem_form, edititem_form=edititem_form)
+    return render_template(
+        "menu.html",
+        title="Celery Stocks - Restaurant Menu",
+        form=form,
+        items=items,
+    )
+
+
