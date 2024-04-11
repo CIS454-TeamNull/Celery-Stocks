@@ -7,15 +7,13 @@
     <h3>Add Ingredients to Inventory</h3>
     <form action="" method="post">
       {{ form.hidden_tag() }}
-      {{ form.itemname.label }}
-      {{ form.itemname }}
+      {{ form.item_name.label }}
+      {{ form.item_name }}
       {{ form.supply.label }}
       {{ form.supply }}
-      {{ form.menu_id.label }}
-      {{ form.menu_id }}
       <p>{{ form.submit() }} </p>
 
-        {% for error in form.itemname.errors %}
+        {% for error in form.item_name.errors %}
           <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
       </p>
@@ -31,7 +29,6 @@
           <tr>
           <td>{{ item.name }}</td> 
           <td>{{ item.supply }}</td>
-          <td>{{ item.menu_id }}</td>
           </tr>
         {% endfor %}
       <tbody>
