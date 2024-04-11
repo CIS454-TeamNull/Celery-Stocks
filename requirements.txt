@@ -5,3 +5,4 @@ flask-wtf
 flask-migrate
 email-validator
 python-dotenv
+alt-profanity-check
