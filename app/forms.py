@@ -20,7 +20,7 @@ class RegistrationForm(FlaskForm):
     password2 = PasswordField(
         "Repeat Password", validators=[DataRequired(), EqualTo("password")]
     )
-    submit = SubmitField("Register")
+    submit = SubmitField("Register") 
 
     def validate_username(self, username):
         user = db.session.scalar(sa.select(User).where(User.username == username.data))
@@ -83,3 +83,7 @@ class EditItemForm(FlaskForm):
     def validate_itemname(self, itemname):
         if predict([itemname.data]):
             raise ValidationError("Please add a different ingredient!")
+
+
+#class createMenuItem():
+    

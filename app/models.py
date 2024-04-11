@@ -46,7 +46,7 @@ class Menu(db.Model):
         index=True, default=lambda: datetime.now(timezone.utc)
     )
     #items = so.WriteOnlyMapped['Item'] = so.relationship(back_populates='menu')
-    items = db.relationship('Item', secondary=menu_items, backref='item')
+    items = so.relationship('Item', secondary=menu_items, backref='item')
 
     def __repr__(self):
         return "<Menu {}>".format(self.name)
