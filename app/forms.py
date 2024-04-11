@@ -4,7 +4,7 @@ from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Le
 import sqlalchemy as sa
 from app import db
 from app.models import User
-from profanity_check import predict, predict_prob
+from profanity_check import predict
 
 class LoginForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
