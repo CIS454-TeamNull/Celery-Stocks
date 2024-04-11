@@ -32,7 +32,7 @@ def inventory():
     # additem_form = AddItemForm()
     # edititem_form = EditItemForm()
     if form.validate_on_submit():
-        item = Item(name=form.item_name.data, supply=form.supply.data, menu=form.menu.data)
+        item = Item(name=form.itemname.data, supply=form.supply.data, menu_id=form.menu_id.data)
         db.session.add(item)
         db.session.commit()
         flash("Inventory Modified")
