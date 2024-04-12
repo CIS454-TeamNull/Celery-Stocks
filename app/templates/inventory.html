@@ -18,7 +18,11 @@
         {% for error in form.itemname.errors %}
           <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
-      </p>
+
+        {% for error in form.supply.errors %}
+          <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        </p>
     </form>
 
     <h3>Current Inventory</h3>

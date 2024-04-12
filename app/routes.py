@@ -148,12 +148,12 @@ def menu():
     #    flash("Inventory Modified")
     #    return redirect(url_for("inventory"))
 
+    entries = db.session.scalars(sa.select(Menu)).all()
     items = db.session.scalars(sa.select(Item)).all()
     # return render_template("inventory.html", title="Celery Stocks - Inventory", additem_form=additem_form, edititem_form=edititem_form)
     return render_template(
         "menu.html",
         title="Celery Stocks - Restaurant Menu",
-        form=form,
         items=items,
     )
 

@@ -64,26 +64,36 @@ class AddIngredientForm(FlaskForm):
         "Item Name", validators=[DataRequired(), Length(min=1, max=140)]
     )
     supply = IntegerField("Number Added", validators=[DataRequired()])
-    menu_id = IntegerField("Menu ID") ;
+    menu_id = IntegerField("Menu ID")
     #menu = StringField("Menu Entry", validators=[DataRequired(), Length(min=1, max=140)])
     submit = SubmitField("Submit")
 
     def validate_itemname(self, itemname):
         if predict([itemname.data]):
             raise ValidationError("Please add a different ingredient!")
+    
+    def validate_supply(self, supply):
+        if supply.data > 9999:
+            print(f"error {supply.data} \n")
+            raise ValidationError("Please enter a lower number!")
 
 
 class EditItemForm(FlaskForm):
     itemname = StringField(
         "Item Name", validators=[DataRequired(), Length(min=1, max=140)]
     )
-    supply = StringField("Total Supply", validators=[DataRequired()])
+    supply = IntegerField("Total Supply", validators=[DataRequired()])
     submit = SubmitField("Submit")
     
     def validate_itemname(self, itemname):
         if predict([itemname.data]):
             raise ValidationError("Please add a different ingredient!")
+    
+    def validate_supply(self, supply):
+        if supply.data > 9999:
+            print("error")
+            raise ValidationError("Please enter a lower number!")
 
 
-#class createMenuItem():
+#class AddMenuEntry(FlaskForm):
     
