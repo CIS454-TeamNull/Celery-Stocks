@@ -1,10 +1,20 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, IntegerField
+from wtforms import (
+    StringField,
+    PasswordField,
+    BooleanField,
+    SubmitField,
+    TextAreaField,
+    IntegerField,
+    SelectMultipleField,
+    widgets,
+)
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length
 import sqlalchemy as sa
 from app import db
-from app.models import User
+from app.models import User, Item
 from profanity_check import predict
+
 
 class LoginForm(FlaskForm):
     username = StringField("Username", validators=[DataRequired()])
@@ -20,13 +30,13 @@ class RegistrationForm(FlaskForm):
     password2 = PasswordField(
         "Repeat Password", validators=[DataRequired(), EqualTo("password")]
     )
-    submit = SubmitField("Register") 
+    submit = SubmitField("Register")
 
     def validate_username(self, username):
         user = db.session.scalar(sa.select(User).where(User.username == username.data))
         if user is not None or predict([username.data]):
             raise ValidationError("Please use a different username.")
-    
+
     def validate_email(self, email):
         user = db.session.scalar(sa.select(User).where(User.email == email.data))
         if user is not None:
@@ -59,19 +69,20 @@ class EditProfileForm(FlaskForm):
             if user is not None:
                 raise ValidationError("Use a different email!")
 
+
 class AddIngredientForm(FlaskForm):
     itemname = StringField(
         "Item Name", validators=[DataRequired(), Length(min=1, max=140)]
     )
     supply = IntegerField("Number Added", validators=[DataRequired()])
     menu_id = IntegerField("Menu ID")
-    #menu = StringField("Menu Entry", validators=[DataRequired(), Length(min=1, max=140)])
+    # menu = StringField("Menu Entry", validators=[DataRequired(), Length(min=1, max=140)])
     submit = SubmitField("Submit")
 
     def validate_itemname(self, itemname):
         if predict([itemname.data]):
             raise ValidationError("Please add a different ingredient!")
-    
+
     def validate_supply(self, supply):
         if supply.data > 9999:
             print(f"error {supply.data} \n")
@@ -84,16 +95,26 @@ class EditItemForm(FlaskForm):
     )
     supply = IntegerField("Total Supply", validators=[DataRequired()])
     submit = SubmitField("Submit")
-    
+
     def validate_itemname(self, itemname):
         if predict([itemname.data]):
             raise ValidationError("Please add a different ingredient!")
-    
+
     def validate_supply(self, supply):
         if supply.data > 9999:
             print("error")
             raise ValidationError("Please enter a lower number!")
 
 
-#class AddMenuEntry(FlaskForm):
-    
+class MultiCheckboxField(SelectMultipleField):
+    widget = widgets.ListWidget(prefix_label=False)
+    option_widget = widgets.CheckboxInput()
+
+
+class AddMenuEntry(FlaskForm):
+    menuname = StringField(
+        "Entry Name", validators=[DataRequired(), Length(min=1, max=140)]
+    )
+    items = SelectMultipleField("Items")
+    # items = MultiCheckboxField(None, coerce=int)
+    submit = SubmitField("Submit")

@@ -8,8 +8,9 @@ from app.forms import (
     EditProfileForm,
     AddIngredientForm,
     EditItemForm,
+    AddMenuEntry,
 )
-from app.models import User, Item
+from app.models import User, Item, Menu
 from datetime import datetime, timezone
 from urllib.parse import urlsplit
 
@@ -32,7 +33,9 @@ def inventory():
     # additem_form = AddItemForm()
     # edititem_form = EditItemForm()
     if form.validate_on_submit():
-        item = Item(name=form.itemname.data, supply=form.supply.data, menu_id=form.menu_id.data)
+        item = Item(
+            name=form.itemname.data, supply=form.supply.data, menu_id=form.menu_id.data
+        )
         db.session.add(item)
         db.session.commit()
         flash("Inventory Modified")
@@ -123,38 +126,49 @@ def edit_profile():
     return render_template("edit_profile.html", title="Edit Account", form=form)
 
 
-@app.route("/create_menu_item", methods=["GET", "POST"])
-@login_required
-def createMenuItem():
-    form = createMenuItem()
-    if form.validate_on_submit():
-        db.session.add(form.createMenuItem.data)
-        db.session.commit()
+# @app.route("/create_menu_item", methods=["GET", "POST"])
+# @login_required
+# def createMenuItem():
+# form = createMenuItem()
+# if form.validate_on_submit():
+#    db.session.add(form.createMenuItem.data)
+#    db.session.commit()
 
-#@app.route("/create_order", methods=["GET", "POST"])
-#@login_required
+
+# @app.route("/create_order", methods=["GET", "POST"])
+# @login_required
 # def createOrder():
 #    todo
+class ChoiceObj(object):
+    def __init__(self, name, choices):
+        # this is needed so that BaseForm.process will accept the object for the named form,
+        # and eventually it will end up in SelectMultipleField.process_data and get assigned
+        # to .data
+        setattr(self, name, choices)
+
 
 @app.route("/menu", methods=["GET", "POST"])
 @login_required
 def menu():
-    # additem_form = AddItemForm()
-    # edititem_form = EditItemForm()
-    #    if form.validate_on_submit():
-    #    item = Item(name=form.itemname.data, supply=form.supply.data, menu_id=form.menu_id.data)
-    #    db.session.add(item)
-    #    db.session.commit()
-    #    flash("Inventory Modified")
-    #    return redirect(url_for("inventory"))
+    form = AddMenuEntry()
+    #    items = [(item.name) for item in db.session.scalars(sa.select(Item)).all()]
+    # form.items = items
+    if form.validate_on_submit():
+        # selected = request.form.getlist() #ChoiceObj('items', session.get('selected'))
+        selected = form.items.data
+        print(f"Entry: {form.menuname.data} Items: {selected} /n")
+        # entry = Menu(name=form.menuname.data, items=selected)
+        # db.session.add(entry)
+        # db.session.commit()
+        # flash("Menu Modified")
+        return redirect(url_for("menu"))
 
-    entries = db.session.scalars(sa.select(Menu)).all()
+    menu = db.session.scalars(sa.select(Menu)).all()
     items = db.session.scalars(sa.select(Item)).all()
-    # return render_template("inventory.html", title="Celery Stocks - Inventory", additem_form=additem_form, edititem_form=edititem_form)
     return render_template(
         "menu.html",
         title="Celery Stocks - Restaurant Menu",
+        form=form,
         items=items,
+        menu=menu,
     )
-
-
