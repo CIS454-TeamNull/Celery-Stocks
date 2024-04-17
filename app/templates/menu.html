@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h6>Hello {{ current_user.username }}</h6>
+
+<form action="" method="post">
+      {{ form.hidden_tag() }}
+      {{ form.menuname.label }}
+      {{ form.menuname }}
+      {{ form.items.label }}
+      <div class="dropdown-check-list">
+        <select>
+      {% for item in items %}
+      <option value={{item.id}}>{{ item.name }}</option>
+        {% endfor %}
+        </select>
+      </div>
+      <p>{{ form.submit() }} </p>
+
+    <section class="menu">
+    <h3>Current Menu</h3>
+    <table>
+      <thead>
+        <th>Menu Entries</th>
+        <th>Available to Sell</th>
+        <th>Ingredients</th>
+      </thead>
+        {% for menuitem in menu %}
+          <tr>
+          <td>{{ menuitem.name }}</td>
+          <td>{{ menuitem.items.supply }}</td>
+          <td>{{ menuitem.items }}</td>
+          </tr>
+        {% endfor %}
+      <tbody>
+
+      </tbody>
+    </table>
+    <a class="button button-primary" href="{{ url_for("menu") }}">Menu</a>
+  </section>
+
+{% endblock %}
