@@ -125,20 +125,6 @@ def edit_profile():
         form.email.data = current_user.email
     return render_template("edit_profile.html", title="Edit Account", form=form)
 
-
-# @app.route("/create_menu_item", methods=["GET", "POST"])
-# @login_required
-# def createMenuItem():
-# form = createMenuItem()
-# if form.validate_on_submit():
-#    db.session.add(form.createMenuItem.data)
-#    db.session.commit()
-
-
-# @app.route("/create_order", methods=["GET", "POST"])
-# @login_required
-# def createOrder():
-#    todo
 class ChoiceObj(object):
     def __init__(self, name, choices):
         # this is needed so that BaseForm.process will accept the object for the named form,

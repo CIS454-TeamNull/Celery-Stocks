@@ -30,7 +30,7 @@ class RegistrationForm(FlaskForm):
     password2 = PasswordField(
         "Repeat Password", validators=[DataRequired(), EqualTo("password")]
     )
-    submit = SubmitField("Register")
+    submit = SubmitField("Register") 
 
     def validate_username(self, username):
         user = db.session.scalar(sa.select(User).where(User.username == username.data))
@@ -118,3 +118,5 @@ class AddMenuEntry(FlaskForm):
     items = SelectMultipleField("Items")
     # items = MultiCheckboxField(None, coerce=int)
     submit = SubmitField("Submit")
+
+#class createMenuItem():
