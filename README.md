@@ -1,6 +1,13 @@
 # Celery-Stocks
 Inventory Management for Restaurants
 
+## Testing Notes
+Run pytest in top-level directory with "python -m pytest" so it can access the system path 
+
+[Flask Testing Docs](https://flask.palletsprojects.com/en/3.0.x/testing/)
+
+https://flask.palletsprojects.com/en/3.0.x/tutorial/tests/
+
 ## Notes for Team Null:
 
 git clone this repo
