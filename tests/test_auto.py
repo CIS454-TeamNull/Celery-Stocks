@@ -2,7 +2,7 @@ import pytest
 from datetime import datetime
 from app import app, db
 from app.models import User, Menu, Item
-from time imprt sleep
+from time import sleep
 
 @pytest.fixture(scope='module')
 def test_client():
