@@ -62,21 +62,61 @@ def test_item_creation(test_client):
 
 def test_item_removal(test_client):
     # Retrieve the item from the database
-    retrieved_item = Item.query.filter_by(name='Test Item').first()
+    old_item = Item.query.filter_by(name='Test Item').first()
 
     # Remove the item from the database
-    db.session.delete(item)
+    db.session.delete(old_item)
     db.session.commit()
 
     # Add a delay to ensure different timestamps
-    sleep(2)
+    sleep(5)
 
-    # Readd the item to the database
-    db.session.add(item)
+    # Read the item to the database
+    new_item = Item(name='Test Item', supply=10, menu_id=1)
+    db.session.add(new_item)
     db.session.commit()
 
     # Retrieve the item again
-    retrieved_item2 = Item.query.filter_by(name='Test Item').first()
+    retrieved_item = Item.query.filter_by(name='Test Item').first()
 
     # Test if the times of the items being added to the database are different
-    assert retrieved_item.timestamp != retrieved_item2.timestamp
+    assert old_item.timestamp != retrieved_item.timestamp
+
+
+def test_user_deletion(test_client):
+    # Create a user
+    #user = User(username='test_user', email='test@example.com')
+    #user.set_password('testpassword')
+
+    # Add user to the database
+    #db.session.add(user)
+    #db.session.commit()
+
+    # Retrieve the user from the database
+    old_user = User.query.filter_by(username='test_user').first()
+
+    db.session.delete(old_user)
+    db.session.commit()
+
+    # query again
+    user = User.query.filter_by(username='test_user').first()
+    failed = False
+    if (user != None):
+        failed = True
+    assert(failed == False)
+
+''' def test_menu_deletion(test_client):
+    # Create a menu
+    menu = Menu(name='Test Menu')
+
+    # Add menu to the database
+    db.session.add(menu)
+    db.session.commit()
+
+    # Retrieve the menu from the database
+    retrieved_menu = Menu.query.filter_by(name='Test Menu').first()
+
+    assert retrieved_menu.name == 'Test Menu'
+    assert isinstance(retrieved_menu.timestamp, datetime)
+'''
+# def test_profanity_filter()
