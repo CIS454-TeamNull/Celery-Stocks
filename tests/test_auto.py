@@ -69,6 +69,6 @@ def test_item_removal(test_client):
 
     # Check if the item is still in the database
     retrieved_item = Item.query.filter_by(name='Test Item').first()
-    assert retrieved_item.name == 'Test Item'
+    assert !(retrieved_item.name == 'Test Item')
 
     
