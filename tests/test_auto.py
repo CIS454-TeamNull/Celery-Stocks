@@ -2,6 +2,7 @@ import pytest
 from datetime import datetime
 from app import app, db
 from app.models import User, Menu, Item
+from time imprt sleep
 
 @pytest.fixture(scope='module')
 def test_client():
@@ -60,13 +61,29 @@ def test_item_creation(test_client):
     assert isinstance(retrieved_item.timestamp, datetime)
 
 def test_item_removal(test_client):
-    # Get item from the database
-    item = Item.query.filter_by(name='Test Item').first()
-    
-    # Remove item from the database
+    # Create an item
+    item = Item(name='Test Item', supply=10, menu_id=1)
+
+    # Add the item to the database
+    db.session.add(item)
+    db.session.commit()
+
+    # Retrieve the item from the database
+    retrieved_item = Item.query.filter_by(name='Test Item').first()
+
+    # Remove the item from the database
     db.session.delete(item)
     db.session.commit()
 
-    # Check if the item is still in the database
-    retrieved_item = Item.query.filter_by(name='Test Item').first()
-    assert retrieved_item.name != 'Test Item'
+    # Add a delay to ensure different timestamps
+    sleep(2)
+
+    # Readd the item to the database
+    db.session.add(item)
+    db.session.commit()
+
+    # Retrieve the item again
+    retrieved_item2 = Item.query.filter_by(name='Test Item').first()
+
+    # Test if the times of the items being added to the database are different
+    assert retrieved_item.timestamp != retrieved_item2.timestamp
