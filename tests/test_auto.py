@@ -61,13 +61,14 @@ def test_item_creation(test_client):
 
 def test_item_removal(test_client):
     # Get item from the database
-    retrieved_item = Item.query.filter_by(name='Test Item').first()
+    item = Item.query.filter_by(name='Test Item').first()
     
     # Remove item from the database
-    db.session.delete(retrieved_item)
+    db.session.delete(item)
     db.session.commit()
 
     # Check if the item is still in the database
+    retrieved_item = Item.query.filter_by(name='Test Item').first()
     assert retrieved_item.name == 'Test Item'
 
     
