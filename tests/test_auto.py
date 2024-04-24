@@ -61,13 +61,6 @@ def test_item_creation(test_client):
     assert isinstance(retrieved_item.timestamp, datetime)
 
 def test_item_removal(test_client):
-    # Create an item
-    item = Item(name='Test Item', supply=10, menu_id=1)
-
-    # Add the item to the database
-    db.session.add(item)
-    db.session.commit()
-
     # Retrieve the item from the database
     retrieved_item = Item.query.filter_by(name='Test Item').first()
 
