@@ -58,3 +58,16 @@ def test_item_creation(test_client):
     assert retrieved_item.name == 'Test Item'
     assert retrieved_item.supply == 10
     assert isinstance(retrieved_item.timestamp, datetime)
+
+def test_item_removal(test_client):
+    # Get item from the database
+    retrieved_item = Item.query.filter_by(name='Test Item').first()
+    
+    # Remove item from the database
+    db.session.delete(retrieved_item)
+    db.session.commit()
+
+    # Check if the item is still in the database
+    assert retrieved_item.name == 'Test Item'
+
+    
