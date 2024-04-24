@@ -69,7 +69,7 @@ def test_item_removal(test_client):
     db.session.commit()
 
     # Add a delay to ensure different timestamps
-    sleep(5)
+    sleep(2)
 
     # Read the item to the database
     new_item = Item(name='Test Item', supply=10, menu_id=1)
@@ -84,39 +84,32 @@ def test_item_removal(test_client):
 
 
 def test_user_deletion(test_client):
-    # Create a user
-    #user = User(username='test_user', email='test@example.com')
-    #user.set_password('testpassword')
-
-    # Add user to the database
-    #db.session.add(user)
-    #db.session.commit()
-
     # Retrieve the user from the database
     old_user = User.query.filter_by(username='test_user').first()
 
     db.session.delete(old_user)
     db.session.commit()
 
-    # query again
+    # query again, user should no longer exits
     user = User.query.filter_by(username='test_user').first()
     failed = False
     if (user != None):
         failed = True
     assert(failed == False)
 
-''' def test_menu_deletion(test_client):
-    # Create a menu
-    menu = Menu(name='Test Menu')
+def test_menu_deletion(test_client):
+    # grab created menu entry
+    old_menu = Menu.query.filter_by(name="Test Menu").first()
 
-    # Add menu to the database
-    db.session.add(menu)
+
+    # delete this menu entry
+    db.session.delete(old_menu)
     db.session.commit()
 
-    # Retrieve the menu from the database
+    # assume test fails
+    failed = True
+    # check for menu 
     retrieved_menu = Menu.query.filter_by(name='Test Menu').first()
-
-    assert retrieved_menu.name == 'Test Menu'
-    assert isinstance(retrieved_menu.timestamp, datetime)
-'''
-# def test_profanity_filter()
+    if (retrieved_menu == None):
+        failed = False
+    assert(failed == False)
